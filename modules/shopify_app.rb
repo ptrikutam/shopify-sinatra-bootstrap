@@ -7,21 +7,19 @@ module Sinatra
       end
 
       def sign!(params) #You can use this method if you want to make your app only accessible from the Shopify Admin
-        unless ShopifyAPI::Session.validate_signature(params)
+        # unless ShopifyAPI::Session.validate_signature(params)
+        #   throw(:halt, [401, "This page can only be accessed from the Shopify Admin\n"])
+        # end
+        if params["signature"].nil?
           throw(:halt, [401, "This page can only be accessed from the Shopify Admin\n"])
         end
-        # unless params["signature"]
-        #   throw(:halt, [401, "This page can only be accessed from the Shopify Admin\n"])
-        # end
-        # original_signature = params["signature"]
-        # params.delete("signature")
-        # calculated_signature = params.collect { |k, v| "#{k}=#{v}" })
-        # calculated_signature = calculated_signature.sort
-        # calculated_signature = calculated_signature.join
-        # calculated_signature = Digest::MD5.hexdigest(ENV['SHOPIFY_SHARED_SECRET'] + calculated_signature)
-        # unless original_signature == calculated_signature
-        #   throw(:halt, [401, "This page can only be accessed from the Shopify Admin\n"])
-        # end
+        original_signature = params["signature"]
+        params.delete("signature")
+        calculated_signature = params.collect { |k, v| "#{k}=#{v}" }.sort.join
+        calculated_signature = Digest::MD5.hexdigest(ENV['SHOPIFY_SHARED_SECRET'] + calculated_signature)
+        unless original_signature == calculated_signature
+          throw(:halt, [401, "This page can only be accessed from the Shopify Admin\n"])
+        end
       end
 
       def authorize!
