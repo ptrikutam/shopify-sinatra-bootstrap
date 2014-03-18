@@ -48,7 +48,7 @@ module Sinatra
       app.post '/login/authenticate' do
         #Define the scope of the permissions you'd like. For reference, all possible permissions are listed here.
         scope = ["write_content","write_themes","write_products","write_customers","write_orders","write_script_tags","write_fulfillments","write_shipping"]
-        redirect to(ShopifyAPI::Session.new(params[:shop]).create_permission_url(scope,ENV['FINALIZE_URL']))
+        redirect to(ShopifyAPI::Session.new(params[:shop]).create_permission_url(scope,ENV['SHOPIFY_CALLBACK_URL']))
       end
 
       app.get '/login/finalize' do
