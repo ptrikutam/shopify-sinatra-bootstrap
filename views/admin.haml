@@ -1,5 +1,14 @@
 %html{:lang => "en"}
   %head
+    %script{src: "https://cdn.shopify.com/s/assets/external/app.js"}
+    :javascript
+      ShopifyApp.init({
+        apiKey: "#{ENV['SHOPIFY_API_KEY']}",
+        shopOrigin: "https://#{shop_base}",
+        debug: true
+      });
+       ShopifyApp.ready(function(){ShopifyApp.Bar.initialize({})});
+
     %meta{:charset => "UTF-8"}
       %title Shopify Sinatra Bootstrap | Admin
   %body

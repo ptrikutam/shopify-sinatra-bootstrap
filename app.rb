@@ -23,6 +23,7 @@ class ShopifySinatra < Sinatra::Base
   get '/admin' do
     authorize!
     sign!(params)
+    @shop_base = params[:shop]
     haml :admin
   end
 
